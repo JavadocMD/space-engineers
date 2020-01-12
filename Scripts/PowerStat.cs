@@ -53,13 +53,35 @@ namespace SpaceEngineers.UWBlockPrograms.PowerStat {
         genCurr += g.CurrentOutput;
         genMax += g.MaxOutput;
       }
-      var msg = "=== POWER STATUS ===\n\n";
-      msg += String.Format("Storage:\n{0:0.00} of {1:0.00} MWh ({2:0}%)\n\n", stored, capacity, 100 * stored / capacity);
-      msg += String.Format("Generation:\n{0:0.00} MW of {1:0.00} MW ({2:0}%)\n\n", genCurr, genMax, 100 * genCurr / genMax);
-      msg += String.Format("Usage:\n{0:0.00} MW of {1:0.00} MW ({2:0}%)\n\n", outCurr, outMax, 100 * outCurr / outMax);
+
+      var msg = $@"=== POWER SYSTEMS STATUS ===
+      
+= Storage: {BarGraph(stored, capacity)}
+{stored:0.00} MWh of {capacity:0.00} MWh
+
+= Generation: {BarGraph(genCurr, genMax)}
+{genCurr:0.00} MW of {genMax:0.00} MW
+
+= Usage: {BarGraph(outCurr, outMax)}
+{outCurr:0.00} MW of {outMax:0.00} MW";
+
       foreach (var p in panels) {
         p.WriteText(msg, false);
       }
+    }
+
+    private string BarGraph(float value, float max) {
+      var pct = 100 * value / max;
+      var s = "[";
+      var i = 0f;
+      for (; i < pct; i += 12.5f) {
+        s += "#";
+      }
+      for (; i < 100; i += 12.5f) {
+        s += "_";
+      }
+      s += $@"] ({pct:0}%)";
+      return s;
     }
 
     #region PreludeFooter
