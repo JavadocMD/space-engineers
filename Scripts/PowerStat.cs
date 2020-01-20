@@ -55,7 +55,7 @@ namespace SpaceEngineers.UWBlockPrograms.PowerStat {
       }
 
       var msg = $@"=== POWER SYSTEMS STATUS ===
-      
+  
 = Storage: {BarGraph(stored, capacity)}
 {stored:0.00} MWh of {capacity:0.00} MWh
 
