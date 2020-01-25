@@ -17,6 +17,7 @@ using SpaceEngineers.Game.ModAPI.Ingame;
 using VRage.Game.ObjectBuilders.Definitions;
 
 namespace SpaceEngineers.UWBlockPrograms.GasStat {
+  // H2 and O2 display for stations.
   public sealed class Program : MyGridProgram {
     #endregion
 
