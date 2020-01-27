@@ -17,6 +17,7 @@ using SpaceEngineers.Game.ModAPI.Ingame;
 using VRage.Game.ObjectBuilders.Definitions;
 
 namespace SpaceEngineers.UWBlockPrograms.PowerStat {
+  // Power status display for a station.
   public sealed class Program : MyGridProgram {
     #endregion
 
@@ -32,46 +33,56 @@ namespace SpaceEngineers.UWBlockPrograms.PowerStat {
       Runtime.UpdateFrequency = UpdateFrequency.Once | UpdateFrequency.Update100;
     }
 
-    public void Save() {
-
-    }
-
     public void Main(string argument, UpdateType updateSource) {
-      var stored = 0f;
-      var capacity = 0f;
-      var outCurr = 0f;
-      var outMax = 0f;
-      var genCurr = 0f;
-      var genMax = 0f;
-      foreach (var b in batteries) {
-        stored += b.CurrentStoredPower;
-        capacity += b.MaxStoredPower;
-        outCurr += b.CurrentOutput;
-        outMax += b.MaxOutput;
+      var stored = Percent.Zero;
+      var usage = Percent.Zero;
+      var gen = Percent.Zero;
+      foreach (var x in batteries) {
+        stored.Add(x.CurrentStoredPower, x.MaxStoredPower);
+        usage.Add(x.CurrentOutput, x.MaxOutput);
       }
-      foreach (var g in generators) {
-        genCurr += g.CurrentOutput;
-        genMax += g.MaxOutput;
+      foreach (var x in generators) {
+        gen.Add(x.CurrentOutput, x.MaxOutput);
       }
 
       var msg = $@"=== POWER SYSTEMS STATUS ===
-  
-= Storage: {BarGraph(stored, capacity)}
-{stored:0.00} MWh of {capacity:0.00} MWh
 
-= Generation: {BarGraph(genCurr, genMax)}
-{genCurr:0.00} MW of {genMax:0.00} MW
+= Storage: {BarGraph(stored.Percentage())}
+{stored.value:0.00} MWh of {stored.max:0.00} MWh
 
-= Usage: {BarGraph(outCurr, outMax)}
-{outCurr:0.00} MW of {outMax:0.00} MW";
+= Generation: {BarGraph(gen.Percentage())}
+{gen.value:0.00} MW of {gen.max:0.00} MW
+
+= Usage: {BarGraph(usage.Percentage())}
+{usage.value:0.00} MW of {usage.max:0.00} MW";
 
       foreach (var p in panels) {
         p.WriteText(msg, false);
       }
     }
 
-    private string BarGraph(float value, float max) {
-      var pct = 100 * value / max;
+    // Utils
+
+    struct Percent {
+      public float value;
+      public float max;
+
+      public static Percent Zero = new Percent() {
+        value = 0f,
+        max = 0f
+      };
+
+      public void Add(float value, float max) {
+        this.value += value;
+        this.max += max;
+      }
+
+      public float Percentage() {
+        return 100 * value / max;
+      }
+    }
+
+    string BarGraph(float pct) {
       var s = "[";
       var i = 0f;
       for (; i < pct; i += 12.5f) {
