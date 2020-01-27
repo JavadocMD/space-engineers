@@ -15,7 +15,7 @@
     "NewLineForMembersInObjectInit": true,
     "NewLineForMembersInAnonymousTypes": true,
     "NewLineForClausesInQuery": true,
-    "UseTabs": true,
+    "UseTabs": false,
     "TabSize": 2,
     "IndentationSize": 2
   }

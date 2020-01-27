@@ -20,47 +20,47 @@ using VRage.Game.ObjectBuilders.Definitions;
 using VRage.Game.GUI.TextPanel;
 
 namespace SpaceEngineers.CockpitDisplay {
-	// Sets up a cockpit display.
-	public sealed class Program : MyGridProgram {
-		#endregion
+  // Sets up a cockpit display.
+  public sealed class Program : MyGridProgram {
+    #endregion
 
-		public Program() {
-			// Example:
-			var cockpit = FindOne<IMyCockpit>();
-			var display = new CockpitDisplay(cockpit, 0);
-			display.Write("hello space");
-		}
+    public Program() {
+      // Example:
+      var cockpit = FindOne<IMyCockpit>();
+      var display = new CockpitDisplay(cockpit, 0);
+      display.Write("hello space");
+    }
 
-		T FindOne<T>() where T : class, IMyTerminalBlock {
-			List<T> xs = new List<T>();
-			GridTerminalSystem.GetBlocksOfType<T>(xs, x => x.IsSameConstructAs(Me));
-			if (xs.Count == 0) {
-				Echo($@"Error: Missing required block of type {nameof(T)}");
-				Me.Enabled = false;
-				return null;
-			} else {
-				return xs[0];
-			}
-		}
+    T FindOne<T>() where T : class, IMyTerminalBlock {
+      List<T> xs = new List<T>();
+      GridTerminalSystem.GetBlocksOfType<T>(xs, x => x.IsSameConstructAs(Me));
+      if (xs.Count == 0) {
+        Echo($@"Error: Missing required block of type {nameof(T)}");
+        Me.Enabled = false;
+        return null;
+      } else {
+        return xs[0];
+      }
+    }
 
-		class CockpitDisplay {
-			IMyTextSurface surface;
+    class CockpitDisplay {
+      IMyTextSurface surface;
 
-			public CockpitDisplay(IMyCockpit cockpit, int surface) {
-				this.surface = cockpit.GetSurface(surface);
-				this.surface.ContentType = ContentType.TEXT_AND_IMAGE;
-				this.surface.BackgroundColor = new Color(12, 12, 12);
-				this.surface.FontSize = 0.9f;
-				this.surface.FontColor = new Color(64, 250, 0);
-				this.surface.Font = "Monospace";
-			}
+      public CockpitDisplay(IMyCockpit cockpit, int surface) {
+        this.surface = cockpit.GetSurface(surface);
+        this.surface.ContentType = ContentType.TEXT_AND_IMAGE;
+        this.surface.BackgroundColor = new Color(12, 12, 12);
+        this.surface.FontSize = 0.9f;
+        this.surface.FontColor = new Color(65, 250, 0);
+        this.surface.Font = "Monospace";
+      }
 
-			public void Write(string text) {
-				this.surface.WriteText(text, false);
-			}
-		}
+      public void Write(string text) {
+        this.surface.WriteText(text, false);
+      }
+    }
 
-		#region PreludeFooter
-	}
+    #region PreludeFooter
+  }
 }
 #endregion
