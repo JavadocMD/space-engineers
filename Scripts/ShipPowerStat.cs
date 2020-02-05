@@ -22,7 +22,7 @@ namespace SpaceEngineers.ShipPowerStat {
   public sealed class Program : MyGridProgram {
     #endregion
 
-    private const int DisplaySurfaceId = 0;
+    const int DisplaySurfaceId = 0;
 
     List<IMyBatteryBlock> batteries = new List<IMyBatteryBlock>();
     CockpitDisplay display;

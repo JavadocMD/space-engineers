@@ -126,7 +126,7 @@ Co: {(co / 1000f),5:N1}      Pt: {(pt / 1000f),5:N1}";
     // Utils
 
     float ToFloat(VRage.MyFixedPoint n) {
-      return n.RawValue / 100000f;
+      return n.RawValue / 1000000f;
     }
 
     T FindOne<T>() where T : class, IMyTerminalBlock {
