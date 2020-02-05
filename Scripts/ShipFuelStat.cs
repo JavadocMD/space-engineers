@@ -15,79 +15,126 @@ using Sandbox.ModAPI.Interfaces;
 using Sandbox.Game.EntityComponents;
 using SpaceEngineers.Game.ModAPI.Ingame;
 using VRage.Game.ObjectBuilders.Definitions;
+using VRage.Game.GUI.TextPanel;
 
 namespace SpaceEngineers.ShipFuelStat {
   // H2 and battery stats for ships.
   public sealed class Program : MyGridProgram {
     #endregion
 
-List<IMyBatteryBlock> batteries = new List<IMyBatteryBlock>();
-List<IMyGasTank> h2Tanks = new List<IMyGasTank>();
-IMyCockpit cockpit;
+    const int DisplaySurfaceId = 0;
+    const float FontSize = 0.9f;
 
-public Program() {
-  Runtime.UpdateFrequency = UpdateFrequency.Once | UpdateFrequency.Update100;
-  
-  GridTerminalSystem.GetBlocksOfType(batteries, x => x.IsSameConstructAs(Me));
-  GridTerminalSystem.GetBlocksOfType(h2Tanks, x => x.IsSameConstructAs(Me) && x.BlockDefinition.SubtypeName == "SmallHydrogenTank");
+    List<IMyBatteryBlock> batteries = new List<IMyBatteryBlock>();
+    List<IMyGasTank> h2Tanks = new List<IMyGasTank>();
+    List<IMyGasTank> o2Tanks = new List<IMyGasTank>();
+    CockpitDisplay display;
 
-  List<IMyTerminalBlock> cockpits = new List<IMyTerminalBlock>();
-  GridTerminalSystem.SearchBlocksOfName("Cockpit", cockpits, x => x is IMyCockpit && x.IsSameConstructAs(Me));
-  if (cockpits.Count < 1) {
-    Echo("Error - Unable to find block named 'Cockpit'.");
-  } else {
-    cockpit = cockpits[0] as IMyCockpit;
-  }
-}
+    public Program() {
+      Runtime.UpdateFrequency = UpdateFrequency.Once | UpdateFrequency.Update100;
+      GridTerminalSystem.GetBlocksOfType(batteries, x => x.IsSameConstructAs(Me));
+      GridTerminalSystem.GetBlocksOfType(o2Tanks, x => x.IsSameConstructAs(Me)
+        && (x.BlockDefinition.SubtypeName == "OxygenTankSmall" || x.BlockDefinition.SubtypeName == ""));
+      GridTerminalSystem.GetBlocksOfType(h2Tanks, x => x.IsSameConstructAs(Me)
+        && (x.BlockDefinition.SubtypeName == "SmallHydrogenTank" || x.BlockDefinition.SubtypeName == "LargeHydrogenTank"));
+      display = new CockpitDisplay(FindOne<IMyCockpit>(), DisplaySurfaceId, FontSize);
+    }
 
-public void Main(string argument, UpdateType updateSource) {
-  var stored = 0f;
-  var capacity = 0f;
-  var outCurr = 0f;
-  var outMax = 0f;
-  foreach (var b in batteries) {
-    stored += b.CurrentStoredPower;
-    capacity += b.MaxStoredPower;
-    outCurr += b.CurrentOutput;
-    outMax += b.MaxOutput;
-  }
+    public void Main(string argument, UpdateType updateSource) {
+      var eStored = Percent.Zero;
+      var eUsage = Percent.Zero;
+      var h2 = Percent.Zero;
+      var o2 = Percent.Zero;
+      foreach (var x in batteries) {
+        eStored.Add(x.CurrentStoredPower, x.MaxStoredPower);
+        eUsage.Add(x.CurrentOutput, x.MaxOutput);
+      }
+      foreach (var x in h2Tanks) {
+        h2.Add((float)(x.Capacity * x.FilledRatio), x.Capacity);
+      }
+      foreach (var x in o2Tanks) {
+        o2.Add((float)(x.Capacity * x.FilledRatio), x.Capacity);
+      }
 
-  var h2Curr = 0f;
-  var h2Max = 0f;
-  foreach (var x in h2Tanks) {
-    h2Curr += (float)(x.Capacity * x.FilledRatio);
-    h2Max += x.Capacity;
-  }
-  h2Curr /= 1000f;
-  h2Max /= 1000f;
+      var msg = $@"=== FUEL STATUS ===
 
-  var msg = $@"=== FUEL STATUS ===
+= Hydrogen: {BarGraph(h2.Percentage())}
+{(h2.value / 1000f):0.0} kL of {(h2.max / 1000f):0.0} kL
 
-= Hydrogen: {BarGraph(h2Curr, h2Max)}
-{h2Curr:0.0} kL of {h2Max:0.0} kL
+= Oxygen: {BarGraph(o2.Percentage())}
+{(o2.value / 1000f):0.0} kL of {(o2.max / 1000f):0.0} kL
 
-= Battery: {BarGraph(stored, capacity)}
-{stored:0.00} MWh of {capacity:0.00} MWh
+= Battery: {BarGraph(eStored.Percentage())}
+{eStored.value:0.00} MWh of {eStored.max:0.00} MWh
 
-= Usage: {BarGraph(outCurr, outMax)}
-{outCurr:0.00} MW of {outMax:0.00} MW";
+= Usage: {BarGraph(eUsage.Percentage())}
+{eUsage.value:0.00} MW of {eUsage.max:0.00} MW";
 
-  cockpit.GetSurface(0).WriteText(msg, false);
-}
+      display.Write(msg);
+    }
 
-private string BarGraph(float value, float max) {
-  var pct = 100 * value / max;
-  var s = "[";
-  var i = 0f;
-  for (; i < pct; i += 12.5f) {
-    s += "#";
-  }
-  for (; i < 100; i += 12.5f) {
-    s += "_";
-  }
-  s += $@"] ({pct:0}%)";
-  return s;
-}
+    // Utils
+
+    struct Percent {
+      public float value;
+      public float max;
+
+      public static Percent Zero = new Percent() {
+        value = 0f,
+        max = 0f
+      };
+
+      public void Add(float value, float max) {
+        this.value += value;
+        this.max += max;
+      }
+
+      public float Percentage() {
+        return 100 * value / max;
+      }
+    }
+
+    T FindOne<T>() where T : class, IMyTerminalBlock {
+      List<T> xs = new List<T>();
+      GridTerminalSystem.GetBlocksOfType<T>(xs, x => x.IsSameConstructAs(Me));
+      if (xs.Count == 0) {
+        Echo($@"Error: Missing required block of type {nameof(T)}");
+        Me.Enabled = false;
+        return null;
+      } else {
+        return xs[0];
+      }
+    }
+
+    class CockpitDisplay {
+      IMyTextSurface surface;
+
+      public CockpitDisplay(IMyCockpit cockpit, int surface, float fontSize = 0.9f) {
+        this.surface = cockpit.GetSurface(surface);
+        this.surface.ContentType = ContentType.TEXT_AND_IMAGE;
+        this.surface.BackgroundColor = new Color(12, 12, 12);
+        this.surface.FontSize = fontSize;
+        this.surface.FontColor = new Color(65, 250, 0);
+        this.surface.Font = "Monospace";
+      }
+
+      public void Write(string text) {
+        this.surface.WriteText(text, false);
+      }
+    }
+
+    string BarGraph(float pct) {
+      var s = "[";
+      var i = 0f;
+      for (; i < pct; i += 12.5f) {
+        s += "#";
+      }
+      for (; i < 100; i += 12.5f) {
+        s += "_";
+      }
+      s += $@"] ({pct:0}%)";
+      return s;
+    }
 
     #region PreludeFooter
   }
