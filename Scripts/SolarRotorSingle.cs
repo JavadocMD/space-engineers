@@ -24,9 +24,9 @@ namespace SpaceEngineers.SolarRotorSingle {
     // The name of the rotor controlling the solar panel array.
     const string RotorName = "Rotor - Solar Boom";
     // The name of a single panel in the array (used for sampling).
-    const string PanelName = "Solar Panel 12";
-    // How quickly to move the rotor. Adjust sign to match movement of the sun.
-    const float SeekVelocity = -0.25f;
+    const string PanelName = "Solar Panel 1";
+    // How quickly to move the rotor. Adjust sign to match movement of the sun. (rad / s)
+    const float SeekVelocity = -0.1f;
 
     IMyMotorStator rotor;
     IMySolarPanel panel;
