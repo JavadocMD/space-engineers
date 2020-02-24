@@ -1,0 +1,66 @@
+name, item subtype, item type, blueprint subtype, volume
+Bulletproof Glass, BulletproofGlass, MyObjectBuilder_Component, BulletproofGlass, 8
+Canvas, Canvas, MyObjectBuilder_Component, Canvas, 8
+Computer, Computer, MyObjectBuilder_Component, ComputerComponent, 1
+Construction Comp, Construction, MyObjectBuilder_Component, ConstructionComponent, 2
+Detector Comp, Detector, MyObjectBuilder_Component, DetectorComponent, 6
+Display, Display, MyObjectBuilder_Component, Display, 6
+Explosives, Explosives, MyObjectBuilder_Component, ExplosivesComponent, 2
+Girder, Girder, MyObjectBuilder_Component, GirderComponent, 2
+Gravity Gen. Comp, GravityGenerator, MyObjectBuilder_Component, GravityGeneratorComponent, 200
+Interior Plate, InteriorPlate, MyObjectBuilder_Component, InteriorPlate, 5
+Large Steel Tube, LargeTube, MyObjectBuilder_Component, LargeTube, 38
+Medical Comp, Medical, MyObjectBuilder_Component, MedicalComponent, 160
+Metal Grid, MetalGrid, MyObjectBuilder_Component, MetalGrid, 15
+Motor, Motor, MyObjectBuilder_Component, MotorComponent, 8
+Power Cell, PowerCell, MyObjectBuilder_Component, PowerCell, 45
+Radio Comm. Comp, RadioCommunication, MyObjectBuilder_Component, RadioCommunicationComponent, 70
+Reactor Comp, Reactor, MyObjectBuilder_Component, ReactorComponent, 8
+Small Steel Tube, SmallTube, MyObjectBuilder_Component, SmallTube, 2
+Solar Cell, SolarCell, MyObjectBuilder_Component, SolarCell, 20
+Steel Plate, SteelPlate, MyObjectBuilder_Component, SteelPlate, 3
+Superconductor, Superconductor, MyObjectBuilder_Component, Superconductor, 8
+Thruster Comp, Thrust, MyObjectBuilder_Component, ThrustComponent, 10
+Automatic Rifle, AutomaticRifleItem, MyObjectBuilder_PhysicalGunObject, AutomaticRifle, 14
+Precise Rifle, PreciseAutomaticRifleItem, MyObjectBuilder_PhysicalGunObject, PreciseAutomaticRifle, 14
+Rapid Fire Rifle, RapidFireAutomaticRifleItem, MyObjectBuilder_PhysicalGunObject, RapidFireAutomaticRifle, 14
+Ultimate Rifle, UltimateAutomaticRifleItem, MyObjectBuilder_PhysicalGunObject, UltimateAutomaticRifle, 14
+Welder 1, WelderItem, MyObjectBuilder_PhysicalGunObject, Welder, 8
+Welder 2, Welder2Item, MyObjectBuilder_PhysicalGunObject, Welder2, 8
+Welder 3, Welder3Item, MyObjectBuilder_PhysicalGunObject, Welder3, 8
+Welder 4, Welder4Item, MyObjectBuilder_PhysicalGunObject, Welder4, 8
+Grinder 1, AngleGrinderItem, MyObjectBuilder_PhysicalGunObject, AngleGrinder, 20
+Grinder 2, AngleGrinder2Item, MyObjectBuilder_PhysicalGunObject, AngleGrinder2, 20
+Grinder 3, AngleGrinder3Item, MyObjectBuilder_PhysicalGunObject, AngleGrinder3, 20
+Grinder 4, AngleGrinder4Item, MyObjectBuilder_PhysicalGunObject, AngleGrinder4, 20
+Drill 1, HandDrillItem, MyObjectBuilder_PhysicalGunObject, HandDrill, 25
+Drill 2, HandDrill2Item, MyObjectBuilder_PhysicalGunObject, HandDrill2, 25
+Drill 3, HandDrill3Item, MyObjectBuilder_PhysicalGunObject, HandDrill3, 25
+Drill 4, HandDrill4Item, MyObjectBuilder_PhysicalGunObject, HandDrill4, 25
+Oxygen Bottle, OxygenBottle, MyObjectBuilder_OxygenContainerObject, OxygenBottle, 120
+Hydrogen Bottle, HydrogenBottle, MyObjectBuilder_GasContainerObject, HydrogenBottle, 120
+NATO 5.56x45mm, NATO_5p56x45mm, MyObjectBuilder_AmmoMagazine, NATO_5p56x45mmMagazine, 0.2
+NATO 25x184mm, NATO_25x184mm, MyObjectBuilder_AmmoMagazine, NATO_25x184mmMagazine, 16
+Missile 200mm, Missile200mm, MyObjectBuilder_AmmoMagazine, Missile200mm, 60
+Cobalt Ore, Cobalt, MyObjectBuilder_Ore, None, 0.37
+Gold Ore, Gold, MyObjectBuilder_Ore, None, 0.37
+Ice, Ice, MyObjectBuilder_Ore, None, 0.37
+Iron Ore, Iron, MyObjectBuilder_Ore, None, 0.37
+Magnesium Ore, Magnesium, MyObjectBuilder_Ore, None, 0.37
+Nickel Ore, Nickel, MyObjectBuilder_Ore, None, 0.37
+Platinum Ore, Platinum, MyObjectBuilder_Ore, None, 0.37
+Scrap Ore, Scrap, MyObjectBuilder_Ore, None, 0.37
+Silicon Ore, Silicon, MyObjectBuilder_Ore, None, 0.37
+Silver Ore, Silver, MyObjectBuilder_Ore, None, 0.37
+Stone, Stone, MyObjectBuilder_Ore, None, 0.37
+Uranium Ore, Uranium, MyObjectBuilder_Ore, None, 0.37
+Cobalt Ingot, Cobalt, MyObjectBuilder_Ingot, None, 0.112
+Gold Ingot, Gold, MyObjectBuilder_Ingot, None, 0.052
+Gravel, Stone, MyObjectBuilder_Ingot, None, 0.37
+Iron Ingot, Iron, MyObjectBuilder_Ingot, None, 0.127
+Magnesium Powder, Magnesium, MyObjectBuilder_Ingot, None, 0.575
+Nickel Ingot, Nickel, MyObjectBuilder_Ingot, None, 0.112
+Platinum Ingot, Platinum, MyObjectBuilder_Ingot, None, 0.047
+Silicon Wafer, Silicon, MyObjectBuilder_Ingot, None, 0.429
+Silver Ingot, Silver, MyObjectBuilder_Ingot, None, 0.095
+Uranium Ingot, Uranium, MyObjectBuilder_Ingot, None, 0.052
