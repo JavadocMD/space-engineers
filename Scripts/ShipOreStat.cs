@@ -114,11 +114,11 @@ namespace SpaceEngineers.UWBlockPrograms.OreStat {
 Mass: {ToFloat(mass):N1} kg
 
 = Ore (tonnes):
-St: {(st / 1000f),5:N1}      Mg: {(mg / 1000f),5:N1}
-Ic: {(ic / 1000f),5:N1}      Si: {(si / 1000f),5:N1}
-Fe: {(fe / 1000f),5:N1}      Ag: {(ag / 1000f),5:N1}
-Ni: {(ni / 1000f),5:N1}      Au: {(au / 1000f),5:N1}
-Co: {(co / 1000f),5:N1}      Pt: {(pt / 1000f),5:N1}";
+St: {(st / 1000f),7:N1}    Mg: {(mg / 1000f),7:N1}
+Ic: {(ic / 1000f),7:N1}    Si: {(si / 1000f),7:N1}
+Fe: {(fe / 1000f),7:N1}    Ag: {(ag / 1000f),7:N1}
+Ni: {(ni / 1000f),7:N1}    Au: {(au / 1000f),7:N1}
+Co: {(co / 1000f),7:N1}    Pt: {(pt / 1000f),7:N1}";
 
       display.Write(msg);
     }
